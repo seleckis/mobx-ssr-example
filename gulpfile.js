@@ -18,7 +18,7 @@ gulp.task('app', ['mobx']);
 gulp.task('mobx', function(callback) {
     webpack({
         context: __dirname + '/src/client',
-        entry: ["./index.js"],
+        entry: [__dirname + "/src/client/index.js"],
         output: {
             path: __dirname + '/dist',
             filename: "./bundle.js"
