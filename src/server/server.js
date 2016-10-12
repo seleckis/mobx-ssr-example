@@ -3,6 +3,7 @@ import { renderToString } from 'react-dom/server';
 import { RouterContext, match } from 'react-router';
 import { Provider } from 'mobx-react';
 
+import request from "request";
 import express from 'express';
 
 import Root from '../common/components/root';
@@ -13,13 +14,13 @@ const app = express();
 
 
 const renderView = (renderProps, appstate) => {
-    
+
     const componentHTML = renderToString(
         <Provider appstate={ appstate }>
             <RouterContext {...renderProps} />
         </Provider>
     );
-    
+
     const initialState = { appstate: appstate.toJson() };
 
     const HTML = `
@@ -46,19 +47,26 @@ app.use(express.static(__dirname + '/../../dist/'));
 
 app.use((req, res) => {
     match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
-        
+
         if(err) {
           console.error(err);
           return res.status(500).end('Internal server error');
         }
-    
-        if(!renderProps) return res.status(404).end('Not found');
-        
-        const appstate = new AppState();
-        appstate.addItem('foo');
-        appstate.addItem('bar');
 
-        res.send(renderView(renderProps, appstate));
+        if(!renderProps) return res.status(404).end('Not found');
+
+        request({
+            url: 'http://localhost:3030/foobar',
+            json: true
+        }, function (error, response, body) {
+            if (!error && response.statusCode === 200) {
+
+                const appstate = new AppState();
+                appstate.items = body.items;
+                res.send(renderView(renderProps, appstate));
+            }
+        });
+
     });
 });
 

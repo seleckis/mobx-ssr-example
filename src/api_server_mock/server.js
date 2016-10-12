@@ -3,11 +3,14 @@ var express = require('express');
 const app = express();
 
 app.get('/foobar', function (req, res, next) {
-	var object = {
-		foobar: 'api foobar'
+	var data = {
+		items: [
+			'Item1',
+			'Item2'
+		]
 	};
 
-	res.send(object);
+	res.send(data);
 	//res.jsonp(object);
 
 });
