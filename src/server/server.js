@@ -45,6 +45,32 @@ const renderView = (renderProps, appstate) => {
 
 app.use(express.static(__dirname + '/../../dist/'));
 
+
+function requests(url, callback) {
+  request({
+      url: url,
+      json: true
+  }, function (error, response, body) {
+      var result = {};
+      if (!error && response.statusCode === 200) {
+          result = body;
+      }
+      callback(result);
+  });
+};
+
+app.get("/ajax", function(req, res){
+    console.log("ajax request");
+    requests("http://localhost:3030/ajax", function(data){
+        console.log("sending result", data);
+        res.send(data);
+    });
+
+
+});
+
+
+
 app.use((req, res) => {
     match({ routes, location: req.url }, (err, redirectLocation, renderProps) => {
 
@@ -66,6 +92,7 @@ app.use((req, res) => {
                 res.send(renderView(renderProps, appstate));
             }
         });
+
 
     });
 });

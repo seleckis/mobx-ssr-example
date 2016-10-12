@@ -23,7 +23,8 @@
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
     "react-router": "^2.5.1",
-    "request": "^2.75.0"
+    "request": "^2.75.0",
+    "whatwg-fetch": "^1.0.0"
   },
   "devDependencies": {
     "babel-core": "^6.10.4",

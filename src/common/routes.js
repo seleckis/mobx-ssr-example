@@ -7,5 +7,6 @@ import Page from './components/page';
 export default (
     <Route path='/' component={ Root }>
         <Route path='page' component={ Page } />
+        <Route path='ajax' />
     </Route>
 );
